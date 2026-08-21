@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 """
-MLLM-5.2 — Lightweight Autocomplete Micro Language Model
-BYO corpus / Input -> Ghost -> Output
+MLLM-5.2 — Preview — lightweight autocomplete, corpus included
+Input -> Ghost -> Output
 
 Single-file, zero-dependency, pure Python 3.10+
 Causal n-gram autocomplete (left context n=1..3), temperature sampling.
+corpus included (MLLM 5.2 preview) — lightweight preview models
 
 Usage:
-  python MLLM-5.2.py --corpus corpus.txt "the quick brown"   -> prints continuation
-  python MLLM-5.2.py --corpus corpus.txt                      -> REPL: type prefix, get continuation
-  echo "hello world" | python MLLM-5.2.py --corpus corpus.txt --steps 10 --temperature 0.3
-  python MLLM-5.2.py --corpus corpus.txt autocomplete "hello world" --steps 16
+  python MLLM-5.2.py --corpus "MLLM 5.2 preview" "the quick brown"   -> prints continuation
+  python MLLM-5.2.py --corpus "MLLM 5.2 preview"                      -> REPL: type prefix, get continuation
+  echo "hello world" | python MLLM-5.2.py --corpus "MLLM 5.2 preview" --steps 10 --temperature 0.3
+  python MLLM-5.2.py --corpus "MLLM 5.2 preview" autocomplete "hello world" --steps 16
 
-Requires --corpus PATH. If not provided:
-  "No corpus found — provide --corpus your.txt or place text in 'MLLM 5.2 preview' and run --corpus 'MLLM 5.2 preview'"
+Requires --corpus PATH.
+  corpus included: use --corpus 'MLLM 5.2 preview'
 """
 from __future__ import annotations
 import argparse
@@ -157,7 +158,7 @@ class AutocompleteEngine:
         return CompleteResult(prefix=list(prefix), continuation=continuation, confidences=confidences, full_sequence=seq)
 BANNER = "MLLM-5.2 — Lightweight Autocomplete"
 
-CORPUS_ERROR = "No corpus found — provide --corpus your.txt or place text in 'MLLM 5.2 preview' and run --corpus 'MLLM 5.2 preview'"
+CORPUS_ERROR = "No corpus found — corpus included: use --corpus 'MLLM 5.2 preview'"
 def assemble_autocomplete(prefix_words: Sequence[str], cont: Sequence[str]) -> tuple[str, str]:
     prefix_str = " ".join(prefix_words)
     cont_str = " ".join(cont)
@@ -205,15 +206,16 @@ def load_topology(corpus_path: Path, term: Term, max_n: int, plain: bool = False
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="MLLM-5.2",
-        description="MLLM-5.2 — Lightweight Autocomplete Micro Language Model / BYO corpus / Input -> Ghost -> Output",
+        description="MLLM-5.2 — Preview — lightweight autocomplete, corpus included / Input -> Ghost -> Output — corpus included (MLLM 5.2 preview) — lightweight preview models",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=textwrap.dedent("""\
+            Preview release — lightweight autocomplete, corpus included (MLLM 5.2 preview)
             examples:
-              python MLLM-5.2.py --corpus corpus.txt "the quick brown"
-              python MLLM-5.2.py --corpus corpus.txt --steps 10 --temperature 0.3 "hello world"
-              python MLLM-5.2.py --corpus corpus.txt autocomplete "hello world" --steps 16
-              echo "hello world" | python MLLM-5.2.py --corpus corpus.txt --steps 10
-              python MLLM-5.2.py --corpus corpus.txt   # REPL
+              python MLLM-5.2.py --corpus "MLLM 5.2 preview" "the quick brown"
+              python MLLM-5.2.py --corpus "MLLM 5.2 preview" --steps 10 --temperature 0.3 "hello world"
+              python MLLM-5.2.py --corpus "MLLM 5.2 preview" autocomplete "hello world" --steps 16
+              echo "hello world" | python MLLM-5.2.py --corpus "MLLM 5.2 preview" --steps 10
+              python MLLM-5.2.py --corpus "MLLM 5.2 preview"   # REPL
         """),
     )
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -260,7 +262,7 @@ def build_parser() -> argparse.ArgumentParser:
 def cmd_repl(args: argparse.Namespace, engine: AutocompleteEngine, term: Term) -> int:
     plain = bool(getattr(args, "plain", False) or getattr(args, "plain_sub", False))
     print(term.paint("magenta", term.paint("bold", "\n› MLLM-5.2 Autocomplete — type a prefix, ghost continues.  :help  [quit] to exit.")))
-    print(term.paint("dim", "  (causal n-gram left context n=1..3 — BYO corpus)\n"))
+    print(term.paint("dim", "  (Preview — lightweight autocomplete, corpus included — causal n=1..3)\n"))
     while True:
         try:
             raw = input(term.paint("bold", "› ")).strip()
@@ -369,10 +371,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not plain:
             if term.enabled:
                 print(term.paint("cyan", BANNER.strip("\n")))
-                print(term.paint("dim", f"  v{__version__}  ·  BYO corpus  ·  causal n={max_n}  ·  Input -> Ghost -> Output"))
+                print(term.paint("dim", f"  v{__version__}  ·  Preview — lightweight autocomplete, corpus included  ·  causal n={max_n}  ·  Input -> Ghost -> Output"))
                 print()
             else:
-                print(f"MLLM-5.2 v{__version__} — BYO corpus · causal n={max_n}")
+                print(f"MLLM-5.2 v{__version__} — Preview — corpus included · causal n={max_n}")
         stdin_text = ""
         if not sys.stdin.isatty():
             try:
@@ -450,10 +452,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not plain:
             if term.enabled:
                 print(term.paint("cyan", BANNER.strip("\n")))
-                print(term.paint("dim", f"  v{__version__}  ·  BYO corpus  ·  causal n={int(f_args.max_ngram)}  ·  Input -> Ghost -> Output"))
+                print(term.paint("dim", f"  v{__version__}  ·  Preview — lightweight autocomplete, corpus included  ·  causal n={int(f_args.max_ngram)}  ·  Input -> Ghost -> Output"))
                 print()
             else:
-                print(f"MLLM-5.2 v{__version__} — BYO corpus · causal n={int(f_args.max_ngram)}")
+                print(f"MLLM-5.2 v{__version__} — Preview — corpus included · causal n={int(f_args.max_ngram)}")
         stdin_text = ""
         if not sys.stdin.isatty():
             try:

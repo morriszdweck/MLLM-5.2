@@ -3,11 +3,9 @@ MLLM 5.2 preview — Lightweight Autocomplete Micro Language Model
 MLLM-5.2 preview corpus file — lightweight autocomplete models
 ----------------------------------------------------------------
 PURPOSE:
-  This is your placeholder/template corpus for MLLM-5.2.
-  Lightweight autocomplete — tiny, local, BYO corpus. Your corpus is
-  the personality; ghost-text learns your style.
-  You will make a corpus yourself: replace everything below the
-  sentinel line with your own text. Lightweight and local by design.
+  This is the preview corpus for MLLM-5.2 — lightweight autocomplete
+  models included, ready to run. Preview release — corpus included.
+  Ghost-text learns your style. Lightweight and local by design.
 
 HOW TO USE — 2 steps:
   1) Edit: delete EXAMPLE block below, paste your text under PASTE line.
