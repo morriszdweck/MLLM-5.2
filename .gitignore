@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+.netlify/
+.DS_Store
+
+# keep corpus preview — do not ignore the template file (file has spaces)
+!MLLM 5.2 preview
