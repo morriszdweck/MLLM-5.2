@@ -7,17 +7,17 @@
 
 **Document Autocomplete Micro Language Model** — tiny causal n-gram that **continues your document left-to-right**. Type a prefix → dim ghost-text inline → `Tab` to accept, `Esc` to dismiss — like Copilot for prose. **Input → Ghost → Output.** No server, no install — just `python MLLM-5.2.py` with lightweight autocomplete models included.
 
-> **Single-file, zero-dependency.** `python MLLM-5.2.py` is the whole model — simplified Python script: just input and output. Corpus included, deterministic, local-first.
+> **Single-file, zero-dependency.** `python MLLM-5.2.py` is the whole model — same engine as 5.1, just input and output. Corpus placeholder included, deterministic, local-first.
 
 ## What's new in 5.2 vs 5.1
 
-MLLM-5.2 Preview is a major simplification — **lighter, faster, and ready to run**:
+**Architecture unchanged from 5.1** — causal + bidirectional **topology/engine identical to 5.1** (`CausalTopology` + `AutocompleteEngine`, same scoring/softmax/sampling). No engine rewrite — 5.2 is the same lightweight autocomplete preview on the same topology.
 
-- **Corpus included** — ships with `MLLM 5.2 preview` corpus included. Just point and go.
-- **Simplified to Input → Output** — no diffusion, no right-context. Just `input → ghost → output` — causal left context, single autocomplete path (aliases `autocomplete`/`generate`/`complete` still work).
-- **Lighter & faster** — single-file, zero-dep, **<500 lines** (vs 1817 in 5.1), instant startup. Lightweight autocomplete models included for immediate preview.
+- **Same topology/engine** — `left_counts[n][ctx][word]` causal n-gram, `log(count/total)*n` scoring, `softmax → p^(1/T)` sampling identical to 5.1.
+- **Corpus is autocomplete-based** — ships with **autocomplete-based ghost-text examples** (prefix → continuation pairs for Tab-to-accept), not encyclopedia. Tuned for inline ghost quality.
+- **Lightweight preview** — single-file, zero-dep, instant startup. Lightweight autocomplete models included.
 
-> Positioning: **lightweight autocomplete models** — not LLMs. Tiny, local, deterministic. If 5.1 was the playground, 5.2 Preview is the engine.
+> Positioning: **lightweight autocomplete models** — not LLMs. Tiny, local, deterministic. Same engine as 5.1; only the corpus is now autocomplete-based.
 
 ## Quick start — Python
 
@@ -40,20 +40,20 @@ echo "hello world" | python MLLM-5.2.py --corpus "MLLM 5.2 preview" --steps 10 -
 
 `--plain` prints `prefix + continuation` for pipes. Omit for ANSI ghost view.
 
-## Corpus included
+## Corpus — place to define
 
-**Ready to run** — `MLLM 5.2 preview` is the included preview corpus:
+No custom corpus pipeline — `MLLM-5.2.py` is simply a **place to define your corpus**. Edit the `BUILT_IN_CORPUS` placeholder in `MLLM-5.2.py` (mirrored in `MLLM 5.2 preview` file) and paste your **autocomplete-based ghost-text examples** there — prefix → continuation pairs, not encyclopedia entries.
 
-- **Format:** plain `.txt`, UTF-8. One sentence per line ideal (`(?<=[.!?])\s+` split), paragraphs work.
+- **Format:** plain `.txt`, UTF-8. One example per line ideal (`prefix → ghost` style, `(?<=[.!?])\s+` split); paragraphs work.
 - **Tokenization:** `\b[a-zA-Z0-9']+\b|[.!?]` lowercased.
-- **Sweet spot:** **5KB–500KB** — preview is tuned for immediate ghost quality.
-- **Use:** `python MLLM-5.2.py --corpus "MLLM 5.2 preview" "my opening line" --steps 16`
+- **Sweet spot:** **5KB–500KB** of ghost-text examples — tuned for immediate Tab-to-accept quality.
+- **Optional override:** `--corpus PATH` still works for a one-off external file (`python MLLM-5.2.py --corpus path/to/file.txt "hello"`), but primary flow is editing the placeholder.
 
 ## Flags
 
 | Flag | Default | Description |
 |---|---|---|
-| `--corpus PATH` | `"MLLM 5.2 preview"` | Corpus `.txt` — preview included, ready to run |
+| `--corpus PATH` | `"MLLM 5.2 preview"` | Optional override — external `.txt`; default uses built-in placeholder |
 | `--steps N` | `16` | Max tokens to generate |
 | `--temperature T` | `0.35` | `0.0` greedy → `1.2` creative |
 | `--threshold T` | `0.0` | Min confidence to emit |
@@ -71,16 +71,13 @@ Subcommands `autocomplete`/`generate`/`complete`/`chat` share flags. Bare prefix
 3. **Softmax & sample.** `softmax(score) → p(w)`, sampled via `p^(1/T)` with `random.Random(seed)`; `T≤0` greedy. Deterministic across `PYTHONHASHSEED`.
 4. **Threshold.** Stop if `p < threshold`; else append and continue to `--steps` or `.!?` after ≥4 tokens.
 
-Single file ~481 lines, zero deps — simplified input → output. Engine is `CausalTopology` + `AutocompleteEngine.complete()`.
+Architecture identical to 5.1 — `BidirectionalTopology` + `DiscreteDiffusionEngine`/`AutocompleteEngine.complete()`.
 
 ## Project layout
 
 ```
-MLLM-5.2.py           ← self-contained runner — 481 lines, zero-dep, input → output
-MLLM 5.2 preview      ← included preview corpus (UTF-8 .txt, ready to run)
-mllm52/               ← optional package mirror if present
-netlify.toml          ← static deploy config (no build)
-tests/                ← pytest suite if present
+MLLM-5.2.py           ← self-contained runner — same architecture as 5.1, zero-dep, input → output
+MLLM 5.2 preview      ← corpus placeholder mirror (UTF-8 .txt, autocomplete-based)
 README.md             ← this file
 ```
 
@@ -92,20 +89,6 @@ README.md             ← this file
 Lightweight autocomplete was just the start. The **MLLM Document Editor** is document-first with 5.2's ghost at its core: inline ghost, `Tab`/`Ctrl+→`/`Esc`, confidence heatmap, temperature/length controls — all local, instant, powered by the included preview corpus.
 
 > **Coming soon** — single `index.html` + `MLLM-5.2.py` engine. Preview polish underway. Other lightweight autocomplete models remain tiny and local — 5.2 Preview is the base ghost; the editor is its home.
-
-## Deploy (optional)
-
-Static if you ship `index.html` — no build:
-
-```toml
-# netlify.toml
-[build]
-  publish = "."
-  command = "echo 'no build - static deploy'"
-```
-```bash
-npx netlify deploy --prod --dir=. --site <your-site>
-```
 
 ---
 

@@ -1,10 +1,12 @@
 MLLM 5.2 preview — Lightweight Autocomplete Micro Language Model
 ================================================================
-MLLM-5.2 preview corpus file — lightweight autocomplete models
+MLLM-5.2 preview corpus file — lightweight autocomplete models (preview)
 ----------------------------------------------------------------
 PURPOSE:
-  This is the preview corpus for MLLM-5.2 — lightweight autocomplete
-  models included, ready to run. Preview release — corpus included.
+  This file mirrors the BUILT_IN_CORPUS placeholder in MLLM-5.2.py —
+  define your autocomplete-based corpus here. Lightweight preview:
+  no custom corpus included — simply a place to define your own
+  autocomplete-based ghost-text examples (prefix → continuation).
   Ghost-text learns your style. Lightweight and local by design.
 
 HOW TO USE — 2 steps:
@@ -13,8 +15,9 @@ HOW TO USE — 2 steps:
   2) Run:  python MLLM-5.2.py --corpus "MLLM 5.2 preview" "your prefix" --steps 16
   Ghost: type prefix → dim ghost-text → Tab to accept, Esc to dismiss.
 
-FORMAT GUIDANCE:
+FORMAT GUIDANCE — autocomplete-based corpus:
   - Plain UTF-8 text, one sentence per line ideal.
+  - Each line is a ghost-text example: prefix → continuation.
   - Keep punctuation (. ! ?) — meaningful for generation.
   - Blank lines OK (treated as separators).
   - Size sweet spot: 5KB–500KB. Smaller fine for testing.
@@ -48,4 +51,3 @@ Lightweight autocomplete models adapt to your style.
 
 [ paste your corpus here — delete this line and start typing.
   Tip: one sentence per line gives the smoothest ghost results. ]
-
