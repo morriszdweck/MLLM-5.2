@@ -60,8 +60,7 @@ def tokenize(text: str) -> list[str]:
 # ───────────────────────────────────────────────────────────── embedded corpus — place to define (autocomplete-based)
 # Define your corpus below between the triple quotes. Replace the placeholder.
 BUILT_IN_CORPUS = """
-The quick brown fox jumps over the lazy dog.
-Hello world, this is autocomplete training data.
+Placeholder
 """
 # ───────────────────────────────────────────────────────────── terminal colors
 
