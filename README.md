@@ -4,7 +4,7 @@
 
 Lightweight autocomplete micro language models — single-file, zero-dependency, local-first.
 
-> Single-file, zero-dep. `python MLLM-5.2-Abyss-0P.py` or `python MLLM-5.2-Muir-20P.py` is the whole model — same engine as 5.1, just input and output.
+> Single-file, zero-dep. `python MLLM-5.2-Abyss-0P.py` or `python MLLM-5.2-Muir-26P.py` is the whole model — same engine as 5.1, just input and output.
 
 Document Autocomplete that continues your document left-to-right. Type a prefix → dim ghost text inline → `Tab` to accept, `Esc` to dismiss. **Input → Ghost → Output.** No server, no install.
 
@@ -15,9 +15,11 @@ Document Autocomplete that continues your document left-to-right. Type a prefix 
 | Model | File | Corpus | Status |
 |---|---|---|---|
 | **Abyss — 0P** | `MLLM-5.2-Abyss-0P.py` | BYO (`BUILT_IN_CORPUS` = `Placeholder`) | ✅ Released — Stable |
-| **Muir — 20P** | `MLLM-5.2-Muir-20P.py` | ~20P embedded | ✅ Released — Stable |
+| **Muir — 26P** | `MLLM-5.2-Muir-26P.py` | ~26P embedded | ✅ Released — Stable |
 
 Both share same engine (`CausalTopology` + `AutocompleteEngine`), same flags, deterministic with `--seed`.
+
+> Previously `MLLM-5.2-Muir-20P.py` → now `MLLM-5.2-Muir-26P.py` (same engine, re-counted).
 
 ### Upcoming
 
@@ -41,10 +43,10 @@ Requires Python 3.10+, no `pip`.
 ```bash
 # one-shot autocomplete (either model)
 python MLLM-5.2-Abyss-0P.py "hello world" --steps 12 --seed 42
-python MLLM-5.2-Muir-20P.py autocomplete "hello world" --steps 16 --seed 7
+python MLLM-5.2-Muir-26P.py autocomplete "hello world" --steps 16 --seed 7
 
 # interactive REPL (either file)
-python MLLM-5.2-Muir-20P.py
+python MLLM-5.2-Muir-26P.py
 # :help, :clear, :steps N, :temp N, :seed N, [quit] to exit
 
 # pipe / stdin
@@ -57,7 +59,7 @@ echo "hello world" | python MLLM-5.2-Abyss-0P.py --steps 10 --plain
 
 ## Corpus — place to define
 
-`MLLM-5.2-Abyss-0P.py` is BYO — edit the `BUILT_IN_CORPUS` placeholder at the top of the file and paste your autocomplete-based examples (prefix → continuation). `MLLM-5.2-Muir-20P.py` ships with ~20P embedded (~91KB) and works out-of-the-box; same override applies.
+`MLLM-5.2-Abyss-0P.py` is BYO — edit the `BUILT_IN_CORPUS` placeholder at the top of the file and paste your autocomplete-based examples (prefix → continuation). `MLLM-5.2-Muir-26P.py` ships with ~26P embedded (~91KB) and works out-of-the-box; same override applies.
 
 - Format: UTF-8 text, one example per line ideal; paragraphs also work.
 - Tokenization: `\b[a-zA-Z0-9']+\b|[.!?]` lowercased, split on `(?<=[.!?])\s+`.
@@ -88,7 +90,7 @@ Subcommands `autocomplete` / `generate` / `complete` / `chat` share flags. Bare 
 
 ```
 MLLM-5.2-Abyss-0P.py  ← 0P, BYO placeholder — self-contained runner, zero-dep, BUILT_IN_CORPUS = Placeholder
-MLLM-5.2-Muir-20P.py  ← 20P, ~91KB embedded — same engine, ready to run
+MLLM-5.2-Muir-26P.py  ← 26P, ~91KB embedded — same engine, ready to run
 README.md               ← this file
 LICENSE                 ← GPL 3.0
 ```
@@ -98,7 +100,7 @@ LICENSE                 ← GPL 3.0
 **Released (Stable)**
 
 - `Abyss — 0P` (`MLLM-5.2-Abyss-0P.py`) — BYO placeholder — ✅ Released
-- `Muir — 20P` (`MLLM-5.2-Muir-20P.py`) — ~20P embedded (~91KB) — ✅ Released
+- `Muir — 26P` (`MLLM-5.2-Muir-26P.py`) — ~26P embedded (~91KB) — ✅ Released
 
 **Upcoming Models**
 
