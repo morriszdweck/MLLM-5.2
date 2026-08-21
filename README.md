@@ -1,36 +1,68 @@
 # MLLM-5.2
 
-> **Preview** — APIs and behavior may change before stable. Preview artifact.
+> **Stable** — Official release. No longer in preview.
 
 Lightweight autocomplete micro language models — single-file, zero-dependency, local-first.
 
+> Single-file, zero-dep. `python MLLM-5.2-Abyss-0P.py` or `python MLLM-5.2-Muir-20P.py` is the whole model — same engine as 5.1, just input and output.
 
-> Single-file, zero-dep. `python MLLM-5.2-Preview-0P.py` is the whole model — same engine as 5.1, just input and output.
+Document Autocomplete that continues your document left-to-right. Type a prefix → dim ghost text inline → `Tab` to accept, `Esc` to dismiss. **Input → Ghost → Output.** No server, no install.
+
+## Models
+
+### Officially Released
+
+| Model | File | Corpus | Status |
+|---|---|---|---|
+| **Abyss — 0P** | `MLLM-5.2-Abyss-0P.py` | BYO (`BUILT_IN_CORPUS` = `Placeholder`) | ✅ Released — Stable |
+| **Muir — 20P** | `MLLM-5.2-Muir-20P.py` | ~20P embedded (~91KB) | ✅ Released — Stable |
+
+Both share same engine (`CausalTopology` + `AutocompleteEngine`), same flags, deterministic with `--seed`.
+
+### Upcoming
+
+| Codename | Scale | Status |
+|---|---|---|
+| **Whitney** | est. 1000P | 🔜 Upcoming — largest |
+| **Tahoe** | est. 200P | 🔜 Upcoming |
+| **Monterey** | est. 70P | 🔜 Upcoming |
+
+Same engine, larger corpora — lightweight, local-first, zero-dep.
 
 ## What's new in 5.2 vs 5.1
 
 Architecture unchanged from 5.1 — same topology and engine (`CausalTopology` + `AutocompleteEngine`).
-Corpus is autocomplete-based — ghost-text pairs (prefix → continuation) tuned for Tab-to-accept quality. Lightweight preview, pure Python 3.10+ stdlib.
+Corpus is autocomplete-based — ghost-text pairs (prefix → continuation) tuned for Tab-to-accept quality. Lightweight, pure Python 3.10+ stdlib.
 
 ## Quick start
 
 Requires Python 3.10+, no `pip`.
 
 ```bash
-# one-shot autocomplete
-python3 MLLM-5.2-Preview-0P.py "hello world" --steps 12 --seed 42
-python3 MLLM-5.2-Preview-0P.py autocomplete "hello world" --steps 16 --seed 7
+# one-shot autocomplete (either model)
+python MLLM-5.2-Abyss-0P.py "hello world" --steps 12 --seed 42
+python MLLM-5.2-Muir-20P.py autocomplete "hello world" --steps 16 --seed 7
 
-# interactive REPL
-python3 MLLM-5.2-Preview-0P.py
+# interactive REPL (either file)
+python MLLM-5.2-Muir-20P.py
 # :help, :clear, :steps N, :temp N, :seed N, [quit] to exit
 
 # pipe / stdin
-echo "hello world" | python3 MLLM-5.2-Preview-0P.py --steps 10 --plain
+echo "hello world" | python MLLM-5.2-Abyss-0P.py --steps 10 --plain
 ```
 
 `--plain` prints `prefix + continuation` for pipes. Omit for ANSI ghost view with confidence heatmap.
 
+> Previously `MLLM-5.2-Preview-0P.py` → now `MLLM-5.2-Abyss-0P.py` (same engine, stable name).
+
+## Corpus — place to define
+
+`MLLM-5.2-Abyss-0P.py` is BYO — edit the `BUILT_IN_CORPUS` placeholder at the top of the file and paste your autocomplete-based examples (prefix → continuation). `MLLM-5.2-Muir-20P.py` ships with ~20P embedded (~91KB) and works out-of-the-box; same override applies.
+
+- Format: UTF-8 text, one example per line ideal; paragraphs also work.
+- Tokenization: `\b[a-zA-Z0-9']+\b|[.!?]` lowercased, split on `(?<=[.!?])\s+`.
+- Sweet spot: 5KB–500KB of examples for immediate ghost quality.
+- Optional override: `--corpus path/to/file.txt` for a one-off external file (not primary).
 
 ## Flags
 
@@ -55,15 +87,31 @@ Subcommands `autocomplete` / `generate` / `complete` / `chat` share flags. Bare 
 ## Layout
 
 ```
-MLLM-5.2-Preview-0P.py  ← self-contained runner — zero-dep, input → output, BUILT_IN_CORPUS inside
+MLLM-5.2-Abyss-0P.py  ← 0P, BYO placeholder — self-contained runner, zero-dep, BUILT_IN_CORPUS = Placeholder
+MLLM-5.2-Muir-20P.py  ← 20P, ~91KB embedded — same engine, ready to run
 README.md               ← this file
 LICENSE                 ← GPL 3.0
 ```
 
-## Coming soon
+## Roadmap
 
-Official release with 5 sized models — `0P` (no corpus, bring your own), `20P`, `70P`, `200P`, `1000P` — same engine, different corpus scales. Lightweight autocomplete remains tiny and local.
-Document Editor — single-file editor built around 5.2 ghost-text: inline ghost, Tab / Esc, confidence heatmap, temperature and length controls, local and instant.
+**Released (Stable)**
+
+- `Abyss — 0P` (`MLLM-5.2-Abyss-0P.py`) — BYO placeholder — ✅ Released
+- `Muir — 20P` (`MLLM-5.2-Muir-20P.py`) — ~20P embedded (~91KB) — ✅ Released
+
+**Upcoming Models**
+
+| Codename | Scale | Status |
+|---|---|---|
+| **Whitney** | est. 1000P | 🔜 Upcoming — largest |
+| **Tahoe** | est. 200P | 🔜 Upcoming |
+| **Monterey** | est. 70P | 🔜 Upcoming |
+
+Same engine (`CausalTopology` + `AutocompleteEngine`), larger corpora — lightweight, local-first, zero-dep.
+
+**Document Editor** — single-file editor built around 5.2 ghost-text: inline ghost, Tab / Esc, confidence heatmap, temperature and length controls, local and instant.
+
 ---
 
-*Core: causal n-gram, autocomplete ghost-text, confidence-gated, deterministic with --seed, lightweight.*
+*Stable release: causal n-gram, autocomplete ghost-text, confidence-gated, deterministic with --seed, lightweight.*
