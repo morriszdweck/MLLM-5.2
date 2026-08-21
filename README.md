@@ -4,7 +4,6 @@
 
 Lightweight autocomplete micro language models — single-file, zero-dependency, local-first.
 
-Document Autocomplete that continues your document left-to-right. Type a prefix → dim ghost text inline → `Tab` to accept, `Esc` to dismiss. **Input → Ghost → Output.** No server, no install.
 
 > Single-file, zero-dep. `python MLLM-5.2-Preview-0P.py` is the whole model — same engine as 5.1, just input and output.
 
@@ -19,27 +18,19 @@ Requires Python 3.10+, no `pip`.
 
 ```bash
 # one-shot autocomplete
-python MLLM-5.2-Preview-0P.py "hello world" --steps 12 --seed 42
-python MLLM-5.2-Preview-0P.py autocomplete "hello world" --steps 16 --seed 7
+python3 MLLM-5.2-Preview-0P.py "hello world" --steps 12 --seed 42
+python3 MLLM-5.2-Preview-0P.py autocomplete "hello world" --steps 16 --seed 7
 
 # interactive REPL
-python MLLM-5.2-Preview-0P.py
+python3 MLLM-5.2-Preview-0P.py
 # :help, :clear, :steps N, :temp N, :seed N, [quit] to exit
 
 # pipe / stdin
-echo "hello world" | python MLLM-5.2-Preview-0P.py --steps 10 --plain
+echo "hello world" | python3 MLLM-5.2-Preview-0P.py --steps 10 --plain
 ```
 
 `--plain` prints `prefix + continuation` for pipes. Omit for ANSI ghost view with confidence heatmap.
 
-## Corpus — place to define
-
-`MLLM-5.2-Preview-0P.py` is a place to define your corpus. Edit the `BUILT_IN_CORPUS` placeholder at the top of the file and paste your autocomplete-based examples (prefix → continuation).
-
-- Format: UTF-8 text, one example per line ideal; paragraphs also work.
-- Tokenization: `\b[a-zA-Z0-9']+\b|[.!?]` lowercased, split on `(?<=[.!?])\s+`.
-- Sweet spot: 5KB–500KB of examples for immediate ghost quality.
-- Optional override: `--corpus path/to/file.txt` for a one-off external file (not primary).
 
 ## Flags
 
