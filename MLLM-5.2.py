@@ -57,13 +57,11 @@ def tokenize(text: str) -> list[str]:
     """Split *text* into lowercase word and punctuation tokens."""
     return TOKEN_RE.findall(text.lower())
 
-# ───────────────────────────────────────────────────────────── embedded corpus
+# ───────────────────────────────────────────────────────────── embedded corpus — place to define (autocomplete-based)
+# Define your corpus below between the triple quotes. Replace the placeholder.
 BUILT_IN_CORPUS = """
-# MLLM-5.2 Preview — define your corpus here
-# This corpus is autocomplete-based (ghost-text, left-to-right continuation examples).
-# Replace this placeholder with your text. Example (delete):
-# The quick brown fox jumps over the lazy dog.
-# Hello world, this is autocomplete training data.
+The quick brown fox jumps over the lazy dog.
+Hello world, this is autocomplete training data.
 """
 # ───────────────────────────────────────────────────────────── terminal colors
 
