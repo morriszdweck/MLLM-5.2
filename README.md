@@ -15,7 +15,7 @@ Document Autocomplete that continues your document left-to-right. Type a prefix 
 | Model | File | Corpus | Status |
 |---|---|---|---|
 | **Abyss — 0P** | `MLLM-5.2-Abyss-0P.py` | BYO (`BUILT_IN_CORPUS` = `Placeholder`) | ✅ Released — Stable |
-| **Muir — 20P** | `MLLM-5.2-Muir-20P.py` | ~20P embedded (~91KB) | ✅ Released — Stable |
+| **Muir — 20P** | `MLLM-5.2-Muir-20P.py` | ~20P embedded | ✅ Released — Stable |
 
 Both share same engine (`CausalTopology` + `AutocompleteEngine`), same flags, deterministic with `--seed`.
 
