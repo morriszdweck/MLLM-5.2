@@ -57,12 +57,12 @@ Subcommands `autocomplete` / `generate` / `complete` / `chat` share flags. Bare 
 ```
 MLLM-5.2-Preview-0P.py  ← self-contained runner — zero-dep, input → output, BUILT_IN_CORPUS inside
 README.md               ← this file
-LICENSE                 ← GPL
+LICENSE                 ← GPL 3.0
 ```
 
 ## Coming soon
 
-Official release with 5 sized models — `0P` (no corpus, bring your own), `1P`, `5P`, `50P`, `100P` — same engine, different corpus scales. Lightweight autocomplete remains tiny and local.
+Official release with 5 sized models — `0P` (no corpus, bring your own), `20P`, `70P`, `200P`, `1000P` — same engine, different corpus scales. Lightweight autocomplete remains tiny and local.
 Document Editor — single-file editor built around 5.2 ghost-text: inline ghost, Tab / Esc, confidence heatmap, temperature and length controls, local and instant.
 ---
 
