@@ -2,11 +2,11 @@
 
 > **Stable** — Official release. No longer in preview.
 
-> 🎉 **NEW: Monterey — 71P Released** — largest autocomplete model yet — single-file, zero-dep, local-first.
+> 🎉 **NEW: Tahoe — 309P Released** — largest autocomplete model yet — single-file, zero-dep, local-first.
 
 Lightweight autocomplete micro language models — single-file, zero-dependency, local-first.
 
-> Single-file, zero-dep. `python MLLM-5.2-Abyss-0P.py`, `python MLLM-5.2-Muir-26P.py` or `python MLLM-5.2-Monterey-71P.py` is the whole model — same engine as 5.1, just input and output.
+> Single-file, zero-dep. `python MLLM-5.2-Abyss-0P.py`, `python MLLM-5.2-Muir-26P.py`, `python MLLM-5.2-Monterey-71P.py` or `python MLLM-5.2-Tahoe-309P.py` is the whole model — same engine as 5.1, just input and output.
 
 Document Autocomplete that continues your document left-to-right. Type a prefix → dim ghost text inline → `Tab` to accept, `Esc` to dismiss. **Input → Ghost → Output.** No server, no install.
 
@@ -18,9 +18,10 @@ Document Autocomplete that continues your document left-to-right. Type a prefix 
 |---|---|---|---|
 | **Abyss — 0P** | `MLLM-5.2-Abyss-0P.py` | BYO (`BUILT_IN_CORPUS` = `Placeholder`) | ✅ Released — Stable |
 | **Muir — 26P** | `MLLM-5.2-Muir-26P.py` | ~26P embedded | ✅ Released — Stable |
-| **Monterey — 71P** | `MLLM-5.2-Monterey-71P.py` | ~71P embedded | ✅ Released — Stable — **NEW** |
+| **Monterey — 71P** | `MLLM-5.2-Monterey-71P.py` | ~71P embedded | ✅ Released — Stable |
+| **Tahoe — 309P** | `MLLM-5.2-Tahoe-309P.py` | ~309P embedded | ✅ Released — Stable — **NEW** |
 
-All three share same engine (`CausalTopology` + `AutocompleteEngine`), same flags, deterministic with `--seed`.
+All four share same engine (`CausalTopology` + `AutocompleteEngine`), same flags, deterministic with `--seed`.
 
 > Previously `MLLM-5.2-Muir-20P.py` → now `MLLM-5.2-Muir-26P.py` (same engine, re-counted).
 
@@ -29,7 +30,6 @@ All three share same engine (`CausalTopology` + `AutocompleteEngine`), same flag
 | Codename | Scale | Status |
 |---|---|---|
 | **Whitney** | est. 1000P | 🔜 Upcoming — largest |
-| **Tahoe** | est. 200P | 🔜 Upcoming |
 
 Same engine, larger corpora — lightweight, local-first, zero-dep.
 
@@ -37,7 +37,7 @@ Same engine, larger corpora — lightweight, local-first, zero-dep.
 
 Architecture unchanged from 5.1 — same topology and engine (`CausalTopology` + `AutocompleteEngine`). Corpus is autocomplete-based — ghost-text pairs (prefix → continuation) tuned for Tab-to-accept quality. Lightweight, pure Python 3.10+ stdlib.
 
-**New in this release:** `Monterey — 71P` (`MLLM-5.2-Monterey-71P.py`) — ~71P embedded (~196KB) — our largest corpus yet, same lightweight engine, ready to run. No server, no install — just `python MLLM-5.2-Monterey-71P.py "hello world"`.
+**New in this release:** `Tahoe — 309P` (`MLLM-5.2-Tahoe-309P.py`) — ~309P embedded (~830KB) — our largest corpus yet, same lightweight engine, ready to run. No server, no install — just `python MLLM-5.2-Tahoe-309P.py "hello world"`.
 
 ## Quick start
 
@@ -48,9 +48,10 @@ Requires Python 3.10+, no `pip`.
 python MLLM-5.2-Abyss-0P.py "hello world" --steps 12 --seed 42
 python MLLM-5.2-Muir-26P.py autocomplete "hello world" --steps 16 --seed 7
 python MLLM-5.2-Monterey-71P.py autocomplete "hello world" --steps 16 --seed 7
+python MLLM-5.2-Tahoe-309P.py autocomplete "hello world" --steps 16 --seed 7
 
 # interactive REPL (any file)
-python MLLM-5.2-Monterey-71P.py
+python MLLM-5.2-Tahoe-309P.py
 # :help, :clear, :steps N, :temp N, :seed N, [quit] to exit
 
 # pipe / stdin
@@ -63,7 +64,7 @@ echo "hello world" | python MLLM-5.2-Abyss-0P.py --steps 10 --plain
 
 ## Corpus — place to define
 
-`MLLM-5.2-Abyss-0P.py` is BYO — edit the `BUILT_IN_CORPUS` placeholder at the top of the file and paste your autocomplete-based examples (prefix → continuation). `MLLM-5.2-Muir-26P.py` ships with ~26P embedded (~91KB) and `MLLM-5.2-Monterey-71P.py` ships with ~71P embedded (~196KB) and works out-of-the-box; same override applies.
+`MLLM-5.2-Abyss-0P.py` is BYO — edit the `BUILT_IN_CORPUS` placeholder at the top of the file and paste your autocomplete-based examples (prefix → continuation). `MLLM-5.2-Muir-26P.py` ships with ~26P embedded (~91KB), `MLLM-5.2-Monterey-71P.py` ships with ~71P embedded (~196KB) and `MLLM-5.2-Tahoe-309P.py` ships with ~309P embedded (~830KB) and works out-of-the-box; same override applies.
 
 - Format: UTF-8 text, one example per line ideal; paragraphs also work.
 - Tokenization: `\b[a-zA-Z0-9']+\b|[.!?]` lowercased, split on `(?<=[.!?])\s+`.
@@ -95,9 +96,10 @@ Subcommands `autocomplete` / `generate` / `complete` / `chat` share flags. Bare 
 ```
 MLLM-5.2-Abyss-0P.py     ← 0P, BYO placeholder — self-contained runner, zero-dep, BUILT_IN_CORPUS = Placeholder
 MLLM-5.2-Muir-26P.py     ← 26P, ~91KB embedded — same engine, ready to run
-MLLM-5.2-Monterey-71P.py ← 71P, ~196KB embedded — same engine, largest yet, ready to run
+MLLM-5.2-Monterey-71P.py ← 71P, ~196KB embedded — same engine, ready to run
+MLLM-5.2-Tahoe-309P.py   ← 309P, ~830KB embedded — same engine, largest yet, ready to run
 README.md                  ← this file
-LICENSE                    ← GPL 3.0
+LICENSE                    ← MIT
 ```
 
 ## Roadmap
@@ -106,14 +108,14 @@ LICENSE                    ← GPL 3.0
 
 - `Abyss — 0P` (`MLLM-5.2-Abyss-0P.py`) — BYO placeholder — ✅ Released
 - `Muir — 26P` (`MLLM-5.2-Muir-26P.py`) — ~26P embedded (~91KB) — ✅ Released
-- `Monterey — 71P` (`MLLM-5.2-Monterey-71P.py`) — ~71P embedded (~196KB) — ✅ Released — **NEW**
+- `Monterey — 71P` (`MLLM-5.2-Monterey-71P.py`) — ~71P embedded (~196KB) — ✅ Released
+- `Tahoe — 309P` (`MLLM-5.2-Tahoe-309P.py`) — ~309P embedded (~830KB) — ✅ Released — **NEW**
 
 **Upcoming Models**
 
 | Codename | Scale | Status |
 |---|---|---|
 | **Whitney** | est. 1000P | 🔜 Upcoming — largest |
-| **Tahoe** | est. 200P | 🔜 Upcoming |
 
 Same engine (`CausalTopology` + `AutocompleteEngine`), larger corpora — lightweight, local-first, zero-dep.
 
@@ -121,4 +123,4 @@ Same engine (`CausalTopology` + `AutocompleteEngine`), larger corpora — lightw
 
 ---
 
-*Stable release: causal n-gram, autocomplete ghost-text, confidence-gated, deterministic with --seed, lightweight. Monterey 71P now available.*
+*Stable release: causal n-gram, autocomplete ghost-text, confidence-gated, deterministic with --seed, lightweight. Tahoe 309P now available.*
