@@ -29,7 +29,8 @@ All four share same engine (`CausalTopology` + `AutocompleteEngine`), same flags
 
 | Codename | Scale | Status |
 |---|---|---|
-| **Whitney** | est. 1000P | 🔜 Upcoming — largest |
+| **Whitney** | est. 1000P | 🔜 Upcoming |
+| **Golden** | est. 4000P | 🔜 Upcoming — largest |
 
 Same engine, larger corpora — lightweight, local-first, zero-dep.
 
@@ -115,7 +116,8 @@ LICENSE                    ← MIT
 
 | Codename | Scale | Status |
 |---|---|---|
-| **Whitney** | est. 1000P | 🔜 Upcoming — largest |
+| **Whitney** | est. 1000P | 🔜 Upcoming |
+| **Golden** (`MLLM-5.2-Golden`) | est. 4000P | 🔜 Upcoming — largest |
 
 Same engine (`CausalTopology` + `AutocompleteEngine`), larger corpora — lightweight, local-first, zero-dep.
 
