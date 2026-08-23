@@ -76,8 +76,8 @@ echo "hello world" | python MLLM-5.2-Abyss-0P.py --steps 10 --plain
 
 | Flag | Default | Description |
 |---|---|---|
-| `--steps N` | `16` | Max tokens to generate |
-| `--temperature T` | `0.35` | 0.0 greedy → 1.2 creative |
+| `--steps N` | `16` | Amt of iterations |
+| `--temperature T` | `0.35` | 0.0 precise → 1.2 creative |
 | `--threshold T` | `0.0` | Min confidence to emit |
 | `--max-ngram N` | `3` | Context size (1–5) |
 | `--seed N` | random | Deterministic sampling |
