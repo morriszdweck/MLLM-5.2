@@ -6,3 +6,4 @@ build/
 dist/
 .netlify/
 .DS_Store
+editor/corpora/

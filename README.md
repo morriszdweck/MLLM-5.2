@@ -10,6 +10,8 @@ Lightweight autocomplete micro language models — single-file, zero-dependency,
 
 Document Autocomplete that continues your document left-to-right. Type a prefix → dim ghost text inline → `Tab` to accept, `Esc` to dismiss. **Input → Ghost → Output.** No server, no install.
 
+**[Try the live demo → mllm-editor.netlify.app](https://mllm-editor.netlify.app)** — all six models in a minimal Word-like document editor: ghost text as you type, `Tab` to accept, full decoding settings, everything local in your browser.
+
 ## Models
 
 ### Officially Released
@@ -99,6 +101,7 @@ MLLM-5.2-Tahoe-309P.py   ← 309P, ~830KB embedded — same engine, ready to run
 MLLM-5.2-Whitney-1042P.py ← 1042P, ~2.8MB embedded — same engine, ready to run
 MLLM-5.2-Golden-3981P.py  ← 3981P, ~11MB embedded — same engine, largest yet, ready to run
 README.md                  ← this file
+editor/                    ← browser demo — Word-like ghost-text editor, all six models (live at mllm-editor.netlify.app)
 LICENSE                    ← MIT
 ```
 
@@ -115,8 +118,8 @@ LICENSE                    ← MIT
 
 **All models have been released.** Same engine (`CausalTopology` + `AutocompleteEngine`) across the whole lineup — lightweight, local-first, zero-dep.
 
-**Document Editor — coming very soon.** The MLLM document editor is a single-file editor built around 5.2 ghost-text: inline ghost completions as you type, Tab / Esc to accept or dismiss, a live confidence heatmap, and temperature and length controls — local and instant, no server. It's in final polishing now and lands here very soon.
+**Document Editor — live at [mllm-editor.netlify.app](https://mllm-editor.netlify.app).** The MLLM document editor is a browser editor built around 5.2 ghost-text: inline ghost completions as you type, `Tab` / `Esc` to accept or dismiss, per-token confidence shown as ghost opacity, and steps / temperature / threshold / max-ngram / seed controls — all six models run locally in a Web Worker (causal n-gram engine ported from the Python originals), no server. Source in `editor/` (`python3 editor/extract_corpora.py` regenerates the corpus files it serves).
 
 ---
 
-*Stable release: causal n-gram, autocomplete ghost-text, confidence-gated, deterministic with --seed, lightweight. All six models — Abyss 0P through Golden 3981P — now available. MLLM document editor coming very soon.*
+*Stable release: causal n-gram, autocomplete ghost-text, confidence-gated, deterministic with --seed, lightweight. All six models — Abyss 0P through Golden 3981P — now available. MLLM document editor live at [mllm-editor.netlify.app](https://mllm-editor.netlify.app).*

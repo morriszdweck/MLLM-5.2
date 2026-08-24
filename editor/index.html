@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MLLM Editor — MLLM-5.2 document autocomplete</title>
+<meta name="description" content="Test all six MLLM-5.2 autocomplete models in a minimal Word-like document editor. Ghost text, Tab to accept, fully local — no server.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⇥</text></svg>">
+</head>
+<body>
+
+<header id="titlebar">
+  <span class="brand">MLLM&nbsp;Editor</span>
+  <input id="docTitle" type="text" value="Untitled document" aria-label="Document title" spellcheck="false">
+  <span class="titlebar-actions">
+    <button id="btnDownloadTxt" class="tbtn" title="Download as .txt">↓ .txt</button>
+    <button id="btnDownloadHtml" class="tbtn" title="Download as .html">↓ .html</button>
+    <button id="btnNew" class="tbtn" title="New document">New</button>
+  </span>
+</header>
+
+<div id="ribbon" role="toolbar" aria-label="Formatting ribbon">
+  <div class="group">
+    <button data-cmd="undo" title="Undo (Ctrl+Z)">↶</button>
+    <button data-cmd="redo" title="Redo (Ctrl+Y)">↷</button>
+  </div>
+  <div class="sep"></div>
+
+  <div class="group">
+    <select id="blockFormat" title="Paragraph style">
+      <option value="p">Normal</option>
+      <option value="h1">Heading 1</option>
+      <option value="h2">Heading 2</option>
+      <option value="h3">Heading 3</option>
+      <option value="blockquote">Quote</option>
+    </select>
+    <select id="fontName" title="Font">
+      <option value="">Font</option>
+      <option value="Calibri, 'Segoe UI', sans-serif">Calibri</option>
+      <option value="Cambria, Georgia, serif">Cambria</option>
+      <option value="Arial, Helvetica, sans-serif">Arial</option>
+      <option value="'Times New Roman', Times, serif">Times</option>
+      <option value="'Courier New', Courier, monospace">Courier</option>
+      <option value="Georgia, serif">Georgia</option>
+    </select>
+    <select id="fontSize" title="Font size">
+      <option value="">Size</option>
+      <option>11</option><option>12</option><option>14</option><option>16</option>
+      <option>18</option><option>20</option><option>24</option><option>28</option>
+      <option>32</option><option>36</option><option>48</option><option>72</option>
+    </select>
+  </div>
+  <div class="sep"></div>
+
+  <div class="group">
+    <button data-cmd="bold" class="fmt" title="Bold (Ctrl+B)"><b>B</b></button>
+    <button data-cmd="italic" class="fmt" title="Italic (Ctrl+I)"><i>I</i></button>
+    <button data-cmd="underline" class="fmt" title="Underline (Ctrl+U)"><u>U</u></button>
+    <button data-cmd="strikeThrough" class="fmt" title="Strikethrough"><s>S</s></button>
+    <label class="color-btn" title="Text color">A<input type="color" id="foreColor" value="#1a1a1a"></label>
+    <label class="color-btn hl" title="Highlight color">ab<input type="color" id="hiliteColor" value="#fff59d"></label>
+    <button data-cmd="removeFormat" title="Clear formatting">A×</button>
+  </div>
+  <div class="sep"></div>
+
+  <div class="group">
+    <button data-cmd="justifyLeft" title="Align left"><svg width="14" height="12" viewBox="0 0 14 12"><path d="M0 1h14M0 4h9M0 7h14M0 10h9" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    <button data-cmd="justifyCenter" title="Align center"><svg width="14" height="12" viewBox="0 0 14 12"><path d="M0 1h14M2.5 4h9M0 7h14M2.5 10h9" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    <button data-cmd="justifyRight" title="Align right"><svg width="14" height="12" viewBox="0 0 14 12"><path d="M0 1h14M5 4h9M0 7h14M5 10h9" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    <button data-cmd="justifyFull" title="Justify"><svg width="14" height="12" viewBox="0 0 14 12"><path d="M0 1h14M0 4h14M0 7h14M0 10h14" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    <button data-cmd="insertUnorderedList" title="Bulleted list">• List</button>
+    <button data-cmd="insertOrderedList" title="Numbered list">1. List</button>
+    <button data-cmd="outdent" title="Decrease indent">⇤</button>
+    <button data-cmd="indent" title="Increase indent">⇥</button>
+  </div>
+  <div class="sep"></div>
+
+  <div class="group mllm">
+    <select id="modelSelect" title="MLLM-5.2 model"></select>
+    <button id="btnComplete" title="Complete now (Ctrl+Space)">✦ Complete</button>
+    <button id="btnSettings" title="Model &amp; decoding settings">⚙ Settings</button>
+  </div>
+</div>
+
+<main id="workspace">
+  <div id="pageScroll">
+    <div id="page" contenteditable="true" spellcheck="true" aria-label="Document"></div>
+    <p id="pageHint">Start typing — ghost text appears as you pause. <kbd>Tab</kbd> accepts, <kbd>Esc</kbd> dismisses, <kbd>Ctrl</kbd>+<kbd>Space</kbd> completes on demand.</p>
+  </div>
+
+  <aside id="settings" hidden>
+    <h2>Model</h2>
+    <div id="modelCards"></div>
+
+    <div id="abyssBox" hidden>
+      <h3>Abyss corpus (bring your own)</h3>
+      <textarea id="abyssCorpus" rows="6" spellcheck="false"
+        placeholder="Paste your training corpus here — one example per line works best."></textarea>
+      <button id="btnBuildAbyss" class="wide">Build Abyss from this corpus</button>
+    </div>
+
+    <h2>Decoding</h2>
+    <div class="slider-row">
+      <label for="optSteps">Steps <span class="val" id="valSteps"></span></label>
+      <input type="range" id="optSteps" min="1" max="40" step="1">
+      <p class="hint">Max tokens per ghost completion.</p>
+    </div>
+    <div class="slider-row">
+      <label for="optTemp">Temperature <span class="val" id="valTemp"></span></label>
+      <input type="range" id="optTemp" min="0" max="1.2" step="0.05">
+      <p class="hint">0 = precise/greedy · 1.2 = creative.</p>
+    </div>
+    <div class="slider-row">
+      <label for="optThreshold">Threshold <span class="val" id="valThreshold"></span></label>
+      <input type="range" id="optThreshold" min="0" max="0.9" step="0.05">
+      <p class="hint">Minimum confidence to emit a token.</p>
+    </div>
+    <div class="slider-row">
+      <label for="optMaxNgram">Max n-gram <span class="val" id="valMaxNgram"></span></label>
+      <input type="range" id="optMaxNgram" min="1" max="5" step="1">
+      <p class="hint">Context size. Above 3 rebuilds the model (once).</p>
+    </div>
+    <div class="row">
+      <label><input type="checkbox" id="optSeedRandom" checked> Random seed</label>
+      <input type="number" id="optSeed" placeholder="42" disabled>
+    </div>
+    <div class="row">
+      <label><input type="checkbox" id="optAutocomplete" checked> Autocomplete as I type</label>
+    </div>
+
+    <h2>About</h2>
+    <p class="hint">
+      All six <a href="https://github.com/morriszdweck/MLLM-5.2" target="_blank" rel="noopener">MLLM-5.2</a>
+      models run locally in your browser (Web Worker, causal n-gram engine ported from the
+      Python originals). Nothing leaves your machine. Ghost opacity shows per-token confidence —
+      fainter = less confident.
+    </p>
+  </aside>
+</main>
+
+<footer id="statusbar">
+  <span id="wordCount">0 words</span>
+  <span class="spacer"></span>
+  <span id="ghostStatus"></span>
+  <span id="modelStatus">Loading…</span>
+</footer>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
