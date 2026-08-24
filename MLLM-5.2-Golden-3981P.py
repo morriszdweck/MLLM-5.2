@@ -59,7 +59,7 @@ def tokenize(text: str) -> list[str]:
 
 # ───────────────────────────────────────────────────────────── embedded corpus — place to define (autocomplete-based)
 # Define your corpus below between the triple quotes. Replace the placeholder.
-BUILT_IN_CORPUS = r"""
+BUILT_IN_CORPUS = r'''
 #!/usr/bin/env python3
 """
 MLLM-5.2 — Document Autocomplete Micro Language Model
@@ -14496,7 +14496,7 @@ External links
 
 
  
-"""
+'''
 # ───────────────────────────────────────────────────────────── terminal colors
 
 _CODES = {
