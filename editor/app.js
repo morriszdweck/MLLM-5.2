@@ -34,22 +34,24 @@ Writing tools should stay out of the way until you need them.`;
 /* ── settings ───────────────────────────────────────────────── */
 const DEFAULT_SETTINGS = {
   modelId: 'tahoe',
-  steps: 16,
+  steps: 1,
   temperature: 0.35,
   threshold: 0,
   maxNgram: 3,
   seed: null, // null = random
   autocomplete: true,
 };
+// bump when defaults change in a way existing visitors should pick up
+const SETTINGS_VERSION = 2;
 let settings = { ...DEFAULT_SETTINGS };
 try {
   const saved = JSON.parse(localStorage.getItem('mllm.settings') || '{}');
-  settings = { ...DEFAULT_SETTINGS, ...saved };
+  if (saved.version === SETTINGS_VERSION) settings = { ...DEFAULT_SETTINGS, ...saved };
 } catch (_) { /* fresh start */ }
 if (!modelById(settings.modelId)) settings.modelId = 'tahoe';
 
 function saveSettings() {
-  localStorage.setItem('mllm.settings', JSON.stringify(settings));
+  localStorage.setItem('mllm.settings', JSON.stringify({ ...settings, version: SETTINGS_VERSION }));
 }
 
 /* ── dom refs ───────────────────────────────────────────────── */
